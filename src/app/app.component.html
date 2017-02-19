@@ -1,0 +1,14 @@
+<h1>
+  {{title}}
+</h1>
+
+<form>
+  <abra-date-picker name="datePicker" [(ngModel)]="value.datePicker" placeholder="2017-02-19" inputClass="test"></abra-date-picker>
+
+  <abra-date-range-picker name="dateRangePicker" [(ngModel)]="value.dateRangePicker" minlength="3" inputGroupClass="form-control" inputClass="test"
+    placeholderStart="Start" placeholderEnd="End"></abra-date-range-picker>
+
+    <abra-multi-row name="multiRow" [(ngModel)]="value.multiRow" [inputType]="'number'"></abra-multi-row>
+</form>
+{{value | json}}
+<!--{{form.value | json}}-->

@@ -1,0 +1,9 @@
+<div *ngFor="let row of value; let i = index; let last = last; trackBy: customTrackBy" [ngClass]="rowClass">
+  <div [ngClass]="inputColumnClass">
+    <input [ngClass]="inputClass" [(ngModel)]="value[i]" (ngModelChange)="onInputRowChange(value, i)" [attr.type]="inputType" />
+  </div>
+  <div [ngClass]="buttonColumnClass">
+    <button [ngClass]="buttonRemoveClass" class="multi-row-remove" (click)="removeRow(row, i)" *ngIf="!last"><i class="icon-close"></i>Remove</button>
+    <button [ngClass]="buttonAddClass"  class="multi-row-add" (click)="addRow()" *ngIf="last"><i class="icon-plus"></i>Add</button>
+  </div>
+</div>

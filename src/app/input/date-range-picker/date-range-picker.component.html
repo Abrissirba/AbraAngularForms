@@ -1,0 +1,6 @@
+<div [ngClass]="inputGroupClass">
+    <i class="icon-calendar"></i>
+    <abra-date-picker #startPicker class="start-picker" [ngClass]="inputClass" [(ngModel)]="value.start" (ngModelChange)="onStartPickerChange($event)" [placeholder]="placeholderStart"></abra-date-picker>
+    <i class="icon-arrow-right-extrasmall"></i>
+    <abra-date-picker #endPicker class="end-picker" [ngClass]="inputClass"  [(ngModel)]="value.end" (ngModelChange)="onEndPickerChange($event)"  [placeholder]="placeholderEnd"></abra-date-picker>
+</div>
