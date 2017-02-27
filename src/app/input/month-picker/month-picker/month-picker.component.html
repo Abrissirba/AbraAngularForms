@@ -1,0 +1,16 @@
+<input (focus)="onFocus($event)">
+
+<div class="overlay" *ngIf="isOpen" (click)="onOverlayClick($event)"></div>
+
+<div class="popup" [ngClass]="{'open': isOpen}">
+  <div class="pad">
+    <div>
+      <label>{{padYear}}</label>
+      <i class="mp-btn prev" (click)="onGoPrevClick($event)" [ngClass]="{'disabled': !isPrevValid}"><</i>
+      <i class="mp-btn next" (click)="onGoNextClick($event)" [ngClass]="{'disabled': !isNextValid}">></i>
+    </div>
+    <ul>
+      <li *ngFor="let month of months; let index = index;" (click)="onMonthClicked(index, month, $event)" [ngClass]="{'active': isActiveMonth(month, padYear)}">{{month}}</li>
+      </ul>
+  </div>
+</div>

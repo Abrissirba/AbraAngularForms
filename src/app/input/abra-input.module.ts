@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DatePickerModule } from './date-picker/date-picker.module';
 import { DateRangePickerModule } from './date-range-picker/date-range-picker.module';
 import { MultiRowModule } from './multi-row/multi-row.module';
+import { MonthPickerModule } from './month-picker/month-picker.module';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { MultiRowModule } from './multi-row/multi-row.module';
   exports: [
     DatePickerModule,
     DateRangePickerModule,
-    MultiRowModule
+    MultiRowModule,
+    MonthPickerModule
   ],
   declarations: []
 })

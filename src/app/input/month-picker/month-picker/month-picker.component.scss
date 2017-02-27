@@ -1,0 +1,107 @@
+$line-height: 32px;
+$hover-color: rgba(255, 227, 160, 0.59);
+$font-size: 16px;
+
+:host {
+    position: relative;
+    user-select: none;
+    background-color: #fff;
+}
+
+.overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 9;
+    top: 0;
+    left: 0;
+    opacity: 1;
+}
+
+.popup {
+    position: absolute;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 8px;
+    z-index: -100000;
+    opacity: 0;
+    //display: none;
+    -webkit-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+    -moz-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+    transform: translate3d(0, -64px, 0);
+}
+
+.popup.open {
+    opacity: 1;
+    //display: block;
+    z-index: 10;
+    transform: translate3d(0, 0, 0);
+}
+
+.pad {
+    position: relative;
+    width: 200px;
+}
+
+label {
+    display: block;
+    font-size: $font-size;
+    line-height: $line-height;
+    text-align: center;
+}
+
+.mp-btn {
+    position: absolute;
+    top: 0;
+    line-height: $line-height;
+    width: $line-height;
+    height: $line-height;
+    text-align: center;
+    cursor: pointer;
+}
+.mp-btn:hover {
+    background-color: $hover-color;
+}
+
+.mp-btn.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+.mp-btn.disabled:hover {
+    background-color: #FFF;
+}
+
+.mp-btn.prev {
+    left: 0;
+}
+.mp-btn.next {
+    right: 0;
+}
+
+ul {
+    display: block;
+    width: 100%;
+}
+ul, li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    cursor: pointer;
+    display: block;
+    float: left;
+    text-align: center;
+    line-height: $line-height;
+    font-size: $font-size;
+    border-radius: 2px;
+    -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+    -moz-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+    transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+    width: 33.33333%;
+}
+
+li:hover, li.active {
+    background-color: $hover-color;
+}

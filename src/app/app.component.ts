@@ -19,4 +19,9 @@ export class AppComponent {
     //   multiRow: [null]
     // });
   }
+
+  onChange(evt) {
+    console.log(evt);
+    console.log(this.value);
+  }
 }
