@@ -16,7 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class MonthPickerComponent implements OnInit, ControlValueAccessor {
 
   @Input() months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  @Input() years: any = [2016, 2017];
+  @Input() years: any;
 
   value: any = {
     year: null,
@@ -29,6 +29,15 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
 
   padDate = new Date();
 
+  leftPos = 0;
+
+  get inputValue() {
+    if(this.value) {
+      return this.months[this.value.month] + '. ' + this.value.year;
+    }
+    return "";
+  }
+
   get padYear() {
     return this.padDate.getFullYear();
   }
@@ -37,13 +46,14 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
     return this.value ? this.months.indexOf(this.value.month) : null;
   }
 
-  constructor() { }
+  constructor(private elementRef: ElementRef) { }
 
   ngOnInit() {
   }
 
   onFocus(evt) {
     this.isOpen = true;
+    this.leftPos = this.elementRef.nativeElement.offsetLeft;
   }
 
   onOverlayClick(evt: MouseEvent) {
@@ -51,8 +61,9 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   }
 
   isActiveMonth(month, year) {
+    console.log(this.value)
     if (this.value) {
-      return this.value.month === month && this.value.year === this.padYear;
+      return this.value.month === this.months.indexOf(month) && this.value.year === this.padYear;
     }
     return false;
   }
@@ -64,6 +75,7 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
 
     this.value.year = this.padYear;
     this.value.month = index;
+    this.isOpen = false;
     this._onChange(this.value);
   }
 
@@ -90,8 +102,11 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
     if (this.years && Object.prototype.toString.call(this.years) === '[object Array]') {
       return this.years.indexOf(date.getFullYear()) > -1;
     }
-    else if(this.years && this.years.min) {
-
+    if(this.years && this.years.min && date.getFullYear() < this.years.min) {
+      return false;
+    }
+    if(this.years && this.years.max && date.getFullYear() > this.years.max) {
+      return false;
     }
     return true;
   }

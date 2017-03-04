@@ -11,6 +11,8 @@
   <abra-multi-row name="multiRow" [(ngModel)]="value.multiRow" [inputType]="'number'"></abra-multi-row>
 
   <abra-month-picker name="monthPicker" [(ngModel)]="value.monthPicker" (ngModelChange)="onChange($event)"></abra-month-picker>
+
+  <abra-month-range-picker name="monthRangePicker" [(ngModel)]="value.monthRangePicker" (ngModelChange)="onChange($event)"></abra-month-range-picker>
 </form>
 <div style="margin-top: 200px">
 <pre>{{value | json}}</pre>

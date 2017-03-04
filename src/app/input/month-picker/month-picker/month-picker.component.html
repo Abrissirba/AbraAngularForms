@@ -1,8 +1,8 @@
-<input (focus)="onFocus($event)">
+<input (focus)="onFocus($event)" [ngModel]="inputValue">
 
 <div class="overlay" *ngIf="isOpen" (click)="onOverlayClick($event)"></div>
 
-<div class="popup" [ngClass]="{'open': isOpen}">
+<div class="popup" [ngClass]="{'open': isOpen}" [style.left]="leftPos">
   <div class="pad">
     <div>
       <label>{{padYear}}</label>
