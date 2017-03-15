@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePickerModule } from '../date-picker/date-picker.module';
 import { DateRangePickerComponent } from './date-range-picker.component';
-import { DateRangePickerMaxLengthDirective } from './date-range-picker-max-length.directive';
-import { DateRangePickerMinLengthDirective } from './date-range-picker-min-length.directive';
+import { DateRangePickerMaxLengthDirective } from './validators/date-range-picker-max-length.directive';
+import { DateRangePickerMinLengthDirective } from './validators/date-range-picker-min-length.directive';
 
 @NgModule({
   imports: [

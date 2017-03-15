@@ -61,7 +61,6 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   }
 
   isActiveMonth(month, year) {
-    console.log(this.value)
     if (this.value) {
       return this.value.month === this.months.indexOf(month) && this.value.year === this.padYear;
     }

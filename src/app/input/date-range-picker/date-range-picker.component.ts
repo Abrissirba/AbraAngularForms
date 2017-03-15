@@ -33,16 +33,16 @@ export class DateRangePickerComponent implements OnInit, ControlValueAccessor {
   onStartPickerChange(value) {
     //this.updateOtherDateWhenLocked("start");
     this.updateStartDate();
-    this.updateFormValue("start");
+    this.updateFormValue();
   }
 
   onEndPickerChange(value) {
     //his.updateOtherDateWhenLocked("end");
     this.updateEndDate();
-    this.updateFormValue("end");
+    this.updateFormValue();
   }
 
-  updateFormValue(changedControl: string) {
+  updateFormValue() {
     this._onChange(this.value);
   }
 

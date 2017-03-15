@@ -49,9 +49,6 @@ export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
 
   updateStartDate() {
     this.endPickerOptions.years.min = this.value.start.year;
-    // this.startPicker.setStartRange(this.startPicker.getDate());
-    // this.endPicker.setStartRange(this.startPicker.getDate());
-    // this.endPicker.setMinDate(this.startPicker.getDate());
   }
 
   updateEndDate() {
