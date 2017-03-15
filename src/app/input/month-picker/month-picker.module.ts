@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MonthPickerComponent } from './month-picker/month-picker.component';
 import { MonthRangePickerComponent } from './month-range-picker/month-range-picker.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MonthRangePickerMinLengthDirective } from './month-range-picker/validators/month-range-picker-min-length.directive';
+import { MonthRangePickerMinRangeDirective } from './month-range-picker/validators/month-range-picker-min-range.directive';
+import { MonthRangePickerMaxRangeDirective } from './month-range-picker/validators/month-range-picker-max-range.directive';
 
 @NgModule({
   imports: [
@@ -13,11 +14,15 @@ import { MonthRangePickerMinLengthDirective } from './month-range-picker/validat
   ],
   declarations: [
     MonthPickerComponent, 
-    MonthRangePickerComponent, MonthRangePickerMinLengthDirective
+    MonthRangePickerComponent, 
+    MonthRangePickerMinRangeDirective, 
+    MonthRangePickerMaxRangeDirective,
   ],
   exports: [
     MonthPickerComponent,
-    MonthRangePickerComponent
+    MonthRangePickerComponent,
+    MonthRangePickerMinRangeDirective, 
+    MonthRangePickerMaxRangeDirective,
   ]
 })
 export class MonthPickerModule { }

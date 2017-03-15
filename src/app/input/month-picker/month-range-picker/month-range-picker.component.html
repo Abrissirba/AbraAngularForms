@@ -1,2 +1,12 @@
-<abra-month-picker name="start" [(ngModel)]="value.start" (ngModelChange)="onStartPickerChange($event)" [years]="startPickerOptions?.years"></abra-month-picker>
-<abra-month-picker name="end" [(ngModel)]="value.end" (ngModelChange)="onEndPickerChange($event)" [years]="endPickerOptions?.years"></abra-month-picker>
+<input (focus)="onFocus($event)" [ngModel]="inputValue">
+
+<div class="overlay" *ngIf="isOpen" (click)="onOverlayClick($event)"></div>
+
+<div class="popup" [ngClass]="{'open': isOpen}" [style.left]="leftPos">
+    <abra-month-picker name="start" [(ngModel)]="value.start" (ngModelChange)="onStartPickerChange($event)" [years]="startPickerOptions?.years"
+        [monthClass]="startMonthClass" [showInput]="false" [keepOpen]="true" titleSuffix="From"></abra-month-picker>
+
+
+        <abra-month-picker class="end" name="end" [(ngModel)]="value.end" (ngModelChange)="onEndPickerChange($event)" [years]="endPickerOptions?.years"
+            [monthClass]="endMonthClass" [showInput]="false" [keepOpen]="true" titleSuffix="To"></abra-month-picker>
+</div>

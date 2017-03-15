@@ -15,17 +15,23 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class MonthPickerComponent implements OnInit, ControlValueAccessor {
 
+  @Input() showInput = true;
+  @Input() keepOpen = false;
   @Input() months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   @Input() years: any;
+  @Input() titleSuffix: string = "";
+  @Input() min;
+  @Input() max;
+  @Input() monthClass: (month: number, year: number) => string;
 
   value: any = {
     year: null,
     month: null
   };
 
-  isOpen = false;
   isNextValid = true;
   isPrevValid = true;
+  isOpen = false;
 
   padDate = new Date();
 
@@ -49,6 +55,7 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   constructor(private elementRef: ElementRef) { }
 
   ngOnInit() {
+    this.isOpen = this.keepOpen;
   }
 
   onFocus(evt) {
@@ -57,7 +64,7 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   }
 
   onOverlayClick(evt: MouseEvent) {
-    this.isOpen = false;
+    this.isOpen = false || this.keepOpen;
   }
 
   isActiveMonth(month, year) {
@@ -67,6 +74,12 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
     return false;
   }
 
+  private _monthClass(month, year) {
+    if(this.monthClass) {
+      return this.monthClass(this.months.indexOf(month), year);
+    }
+  }
+
   onMonthClicked(index: number, month: string, evt: MouseEvent) {
     if (!this.value) {
       this.value = {}
@@ -74,37 +87,38 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
 
     this.value.year = this.padYear;
     this.value.month = index;
-    this.isOpen = false;
+    this.isOpen = false || this.keepOpen;
     this._onChange(this.value);
   }
 
   onGoPrevClick(evt: MouseEvent) {
-    if(this.isValid(this.addYear(-1))) {
+    if(this.isValid(-1)) {
       this.padDate = this.addYear(-1);
       this.validate();
     }
   }
 
   onGoNextClick(evt: MouseEvent) {
-    if(this.isValid(this.addYear(1))) {
+    if(this.isValid(1)) {
       this.padDate = this.addYear(1);
       this.validate();
     }
   }
 
   validate() {
-    this.isPrevValid = this.isValid(this.addYear(-1));
-    this.isNextValid = this.isValid(this.addYear(1));
+    this.isPrevValid = this.isValid(-1);
+    this.isNextValid = this.isValid(1);
   }
 
-  isValid(date) {
+  isValid(dateChange) {
+    let date = this.addYear(dateChange);
     if (this.years && Object.prototype.toString.call(this.years) === '[object Array]') {
       return this.years.indexOf(date.getFullYear()) > -1;
     }
-    if(this.years && this.years.min && date.getFullYear() < this.years.min) {
+    if(dateChange < 0 && this.years && this.years.min && date.getFullYear() < this.years.min) {
       return false;
     }
-    if(this.years && this.years.max && date.getFullYear() > this.years.max) {
+    if(dateChange > 0 && this.years && this.years.max && date.getFullYear() > this.years.max) {
       return false;
     }
     return true;

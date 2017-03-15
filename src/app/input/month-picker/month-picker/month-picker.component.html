@@ -1,16 +1,16 @@
-<input (focus)="onFocus($event)" [ngModel]="inputValue">
+<input (focus)="onFocus($event)" [ngModel]="inputValue" *ngIf="showInput">
 
-<div class="overlay" *ngIf="isOpen" (click)="onOverlayClick($event)"></div>
+<div class="overlay" *ngIf="isOpen && !keepOpen" (click)="onOverlayClick($event)"></div>
 
 <div class="popup" [ngClass]="{'open': isOpen}" [style.left]="leftPos">
   <div class="pad">
     <div>
-      <label>{{padYear}}</label>
+      <label>{{titleSuffix + ' ' + padYear}}</label>
       <i class="mp-btn prev" (click)="onGoPrevClick($event)" [ngClass]="{'disabled': !isPrevValid}"><</i>
       <i class="mp-btn next" (click)="onGoNextClick($event)" [ngClass]="{'disabled': !isNextValid}">></i>
     </div>
     <ul>
-      <li *ngFor="let month of months; let index = index;" (click)="onMonthClicked(index, month, $event)" [ngClass]="{'active': isActiveMonth(month, padYear)}">{{month}}</li>
+      <li *ngFor="let month of months; let index = index;" (click)="onMonthClicked(index, month, $event)" class="{{_monthClass(month, padYear)}}" [class.active]="isActiveMonth(month, padYear)">{{month}}</li>
       </ul>
   </div>
 </div>
