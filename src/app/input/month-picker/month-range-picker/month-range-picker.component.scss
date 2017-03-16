@@ -1,58 +1,56 @@
 :host {
     display: inline-block;
-}
-
-abra-month-picker {
-    display: block;
-}
-
-.end {
-    margin-left: 224px;
-}
-
-/deep/ .in-range {
-    background-color: rgba(255, 238, 199, 0.5);
-}
-
-
-:host {
     position: relative;
     user-select: none;
     background-color: #fff;
 }
 
-.overlay {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    z-index: 9;
-    top: 0;
-    left: 0;
-    opacity: 1;
+
+.single-input {
+    abra-month-picker {
+        display: block;
+    }
+    .overlay {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        z-index: 9;
+        top: 0;
+        left: 0;
+        opacity: 1;
+    }
+
+    .popup {
+        position: absolute;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        padding: 8px;
+        width: 440px;
+        height: 208px;
+        z-index: -100000;
+        opacity: 0;
+        //display: none;
+        -webkit-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+        -moz-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+        transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+        transform: translate3d(0, -64px, 0);
+    }
+    /deep/ abra-month-range-picker abra-month-picker .popup {
+        box-shadow: none !important;
+        background-color: rgba(238, 238, 238, 0.9);
+    }
+
+    .popup.open {
+        opacity: 1;
+        //display: block;
+        z-index: 10;
+        transform: translate3d(0, 0, 0);
+    }
+    .end {
+        margin-left: 224px;
+    }
 }
 
-.popup {
-    position: absolute;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    padding: 8px;
-    width: 440px;
-    height: 208px;
-    z-index: -100000;
-    opacity: 0;
-    //display: none;
-    -webkit-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
-    -moz-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
-    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
-    transform: translate3d(0, -64px, 0);
-}
-/deep/ abra-month-range-picker abra-month-picker .popup {
-    box-shadow: none !important;
-    background-color: rgba(238, 238, 238, 0.9);
-}
 
-.popup.open {
-    opacity: 1;
-    //display: block;
-    z-index: 10;
-    transform: translate3d(0, 0, 0);
+/deep/ .in-range {
+    background-color: rgba(255, 238, 199, 0.5);
 }

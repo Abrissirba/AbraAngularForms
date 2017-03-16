@@ -1,4 +1,4 @@
-<input (focus)="onFocus($event)" [ngModel]="inputValue" *ngIf="showInput">
+<input (focus)="onFocus($event)" [ngModel]="inputValue" *ngIf="showInput" [placeholder]="placeholder">
 
 <div class="overlay" *ngIf="isOpen && !keepOpen" (click)="onOverlayClick($event)"></div>
 
@@ -6,11 +6,11 @@
   <div class="pad">
     <div>
       <label>{{titleSuffix + ' ' + padYear}}</label>
-      <i class="mp-btn prev" (click)="onGoPrevClick($event)" [ngClass]="{'disabled': !isPrevValid}"><</i>
-      <i class="mp-btn next" (click)="onGoNextClick($event)" [ngClass]="{'disabled': !isNextValid}">></i>
+      <i class="mp-btn prev" (click)="onGoPrevClick($event)" [class.disabled]="!isPrevYearValid"><</i>
+      <i class="mp-btn next" (click)="onGoNextClick($event)" [class.disabled]="!isNextYearValid">></i>
     </div>
     <ul>
-      <li *ngFor="let month of months; let index = index;" (click)="onMonthClicked(index, month, $event)" class="{{_monthClass(month, padYear)}}" [class.active]="isActiveMonth(month, padYear)">{{month}}</li>
+      <li *ngFor="let month of months; let index = index;" (click)="onMonthClicked(index, $event)" class="{{_monthClass(index, padYear)}}" [class.active]="isActiveMonth(index, padYear)" [class.disabled]="isDisabledMonth(index, padYear)">{{month}}</li>
       </ul>
   </div>
 </div>

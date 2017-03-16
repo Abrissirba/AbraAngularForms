@@ -1,4 +1,4 @@
-import { Directive, Attribute, forwardRef } from '@angular/core';
+import { Directive, Attribute, forwardRef, Input } from '@angular/core';
 import { FormControl, NG_VALIDATORS, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
 import * as moment from 'moment';
 import { DateHelper } from '../../../common';
@@ -8,7 +8,7 @@ export const MonthRangePickerMinRangeValidator = (min: number): ValidatorFn => {
     if(formControl.value && formControl.value.start && formControl.value.end) {
       let start = DateHelper.toMoment(formControl.value.start.year, formControl.value.start.month, 0);
       let end = DateHelper.toMoment(formControl.value.end.year, formControl.value.end.month, 0);
-      if(end.diff(start, 'months', true) < min) {
+      if(end.diff(start, 'months', true) <= min) {
         return { minrange: { valid: false, minrange: min } }
       }
     }
@@ -17,17 +17,21 @@ export const MonthRangePickerMinRangeValidator = (min: number): ValidatorFn => {
 }
 
 @Directive({
-  selector: 'abra-month-range-picker[min-range][ngModel]',
+  selector: 'abra-month-range-picker[minRange][ngModel]',
   providers: [
-    { provide: NG_VALIDATORS, useExisting: forwardRef(() => MonthRangePickerMinRangeValidator), multi: true }
+    { provide: NG_VALIDATORS, useExisting: forwardRef(() => MonthRangePickerMinRangeDirective), multi: true }
   ]
 })
 export class MonthRangePickerMinRangeDirective implements Validator {
 
   private _validator: ValidatorFn;
 
-  constructor( @Attribute("min-range") minrange: string) {
-    var number = parseInt(minrange);
+  @Input() minRange;
+
+  constructor() {}
+
+  ngOnInit() {
+    var number = typeof this.minRange === 'string' ? parseInt(this.minRange) : this.minRange;
     this._validator = MonthRangePickerMinRangeValidator(number);
   }
 

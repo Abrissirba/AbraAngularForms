@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, forwardRef, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, forwardRef, ViewChild, ElementRef, ViewEncapsulation, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -23,14 +23,15 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   @Input() min;
   @Input() max;
   @Input() monthClass: (month: number, year: number) => string;
+  @Input() placeholder: string = "";
 
   value: any = {
     year: null,
     month: null
   };
 
-  isNextValid = true;
-  isPrevValid = true;
+  isNextYearValid = true;
+  isPrevYearValid = true;
   isOpen = false;
 
   padDate = new Date();
@@ -38,7 +39,7 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   leftPos = 0;
 
   get inputValue() {
-    if(this.value) {
+    if (this.value) {
       return this.months[this.value.month] + '. ' + this.value.year;
     }
     return "";
@@ -49,13 +50,17 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   }
 
   get padMonth() {
-    return this.value ? this.months.indexOf(this.value.month) : null;
+    return this.value ? this.value.month : null;
   }
 
   constructor(private elementRef: ElementRef) { }
 
   ngOnInit() {
     this.isOpen = this.keepOpen;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.validate();
   }
 
   onFocus(evt) {
@@ -69,56 +74,68 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
 
   isActiveMonth(month, year) {
     if (this.value) {
-      return this.value.month === this.months.indexOf(month) && this.value.year === this.padYear;
+      return this.value.month === month && this.value.year === this.padYear;
     }
     return false;
   }
 
   private _monthClass(month, year) {
-    if(this.monthClass) {
-      return this.monthClass(this.months.indexOf(month), year);
+    if (this.monthClass) {
+      return this.monthClass(month, year);
     }
   }
 
-  onMonthClicked(index: number, month: string, evt: MouseEvent) {
-    if (!this.value) {
-      this.value = {}
-    }
+  onMonthClicked(month: string, evt: MouseEvent) {
+    if (!this.isDisabledMonth(month, this.padYear)) {
+      if (!this.value) {
+        this.value = {}
+      }
 
-    this.value.year = this.padYear;
-    this.value.month = index;
-    this.isOpen = false || this.keepOpen;
-    this._onChange(this.value);
+      this.value.year = this.padYear;
+      this.value.month = month;
+      this.isOpen = false || this.keepOpen;
+      this._onChange(this.value);
+    }
   }
 
   onGoPrevClick(evt: MouseEvent) {
-    if(this.isValid(-1)) {
+    if (this.isYearSelectable(-1)) {
       this.padDate = this.addYear(-1);
       this.validate();
     }
   }
 
   onGoNextClick(evt: MouseEvent) {
-    if(this.isValid(1)) {
+    if (this.isYearSelectable(1)) {
       this.padDate = this.addYear(1);
       this.validate();
     }
   }
 
   validate() {
-    this.isPrevValid = this.isValid(-1);
-    this.isNextValid = this.isValid(1);
+    this.isPrevYearValid = this.isYearSelectable(-1);
+    this.isNextYearValid = this.isYearSelectable(1);
   }
 
-  isValid(dateChange) {
+  isDisabledMonth(month, year) {
+    if (this.min && year <= this.min.year && month < this.min.month) {
+      return true;
+    }
+    if (this.max && year >= this.max.year && month > this.max.month) {
+      return true;
+    }
+    return false;
+  }
+
+  isYearSelectable(dateChange) {
     let date = this.addYear(dateChange);
     if (this.years && Object.prototype.toString.call(this.years) === '[object Array]') {
       return this.years.indexOf(date.getFullYear()) > -1;
     }
-    if(dateChange < 0 && this.years && this.years.min && date.getFullYear() < this.years.min) {
+    if (dateChange < 0 && this.min && date.getFullYear() < this.min.year) {
       return false;
     }
-    if(dateChange > 0 && this.years && this.years.max && date.getFullYear() > this.years.max) {
+    if (dateChange > 0 && this.max && date.getFullYear() > this.max.year) {
       return false;
     }
     return true;

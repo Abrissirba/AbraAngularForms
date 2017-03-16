@@ -6,4 +6,4 @@ export * from './multi-row/multi-row.module';
 export * from './month-picker/month-picker/month-picker.component';
 export * from './month-picker/month-picker.module';
 export * from './abra-input.module';
-export * from './abra-validators';
+export * from './validators';
