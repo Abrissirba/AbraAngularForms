@@ -1,0 +1,5 @@
+<div class="dynamic-field form-input" [formGroup]="group">
+  <label>{{ config.label }}</label>
+  <abra-month-range-picker [placeholder]="config.placeholder" [formControlName]="config.name" [maxRange]="maxRange" [minRange]="minRange"
+    [lockedRange]="lockedRange" [startPickerOptions]="getSettingsValue('startPickerOptions')" [endPickerOptions]="getSettingsValue('endPickerOptions')"></abra-month-range-picker>
+</div>
