@@ -20,9 +20,9 @@ export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
   // if one or twop inputs should be used
   @Input() singleInput: boolean = false;
 
-  @Input() startPickerOptions: MonthPickerOptions;
+  @Input() startPickerOptions: MonthPickerOptions = {};
 
-  @Input() endPickerOptions: MonthPickerOptions;
+  @Input() endPickerOptions: MonthPickerOptions = {};
 
   @Input() months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 

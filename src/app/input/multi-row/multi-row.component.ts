@@ -19,7 +19,7 @@ export class MultiRowComponent implements OnInit, ControlValueAccessor {
   @Input() rowClass: string;
   @Input() inputClass: string;
   @Input() inputColumnClass: string;
-  @Input() buttonColumnClas: string;
+  @Input() buttonColumnClass: string;
   @Input() buttonAddClass: string;
   @Input() buttonRemoveClass: string;
 
