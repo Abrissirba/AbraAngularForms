@@ -1,4 +1,4 @@
-<input (focus)="onFocus($event)" [ngModel]="inputValue" *ngIf="showInput" [placeholder]="placeholder">
+<input (focus)="onFocus($event)" [ngModel]="inputValue" *ngIf="showInput" [placeholder]="placeholder" [disabled]="disabled">
 
 <div class="overlay" *ngIf="isOpen && !keepOpen" (click)="onOverlayClick($event)"></div>
 

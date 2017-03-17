@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, forwardRef, ViewChild, ElementRef, ViewEncapsulation, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MonthPickerValue } from '../models';
 
 @Component({
   selector: 'abra-month-picker',
@@ -18,38 +19,29 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   @Input() showInput = true;
   @Input() keepOpen = false;
   @Input() months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  @Input() years: any;
+  @Input() years: Array<number>;
   @Input() titleSuffix: string = "";
-  @Input() min;
-  @Input() max;
+  @Input() min: MonthPickerValue;
+  @Input() max: MonthPickerValue;
   @Input() monthClass: (month: number, year: number) => string;
   @Input() placeholder: string = "";
+  @Input() disabled: boolean = false;
+  @Input() padYear = new Date().getFullYear();
 
-  value: any = {
-    year: null,
-    month: null
-  };
+  protected value: MonthPickerValue;
+  protected isNextYearValid = true;
+  protected isPrevYearValid = true;
+  protected isOpen = false;
+  protected leftPos = 0;
 
-  isNextYearValid = true;
-  isPrevYearValid = true;
-  isOpen = false;
-
-  padDate = new Date();
-
-  leftPos = 0;
-
-  get inputValue() {
+  protected get inputValue() {
     if (this.value) {
       return this.months[this.value.month] + '. ' + this.value.year;
     }
     return "";
   }
 
-  get padYear() {
-    return this.padDate.getFullYear();
-  }
-
-  get padMonth() {
+  protected get padMonth() {
     return this.value ? this.value.month : null;
   }
 
@@ -71,24 +63,10 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   onOverlayClick(evt: MouseEvent) {
     this.isOpen = false || this.keepOpen;
   }
-
-  isActiveMonth(month, year) {
-    if (this.value) {
-      return this.value.month === month && this.value.year === this.padYear;
-    }
-    return false;
-  }
-
-  private _monthClass(month, year) {
-    if (this.monthClass) {
-      return this.monthClass(month, year);
-    }
-  }
-
-  onMonthClicked(month: string, evt: MouseEvent) {
+    onMonthClicked(month: number, evt: MouseEvent) {
     if (!this.isDisabledMonth(month, this.padYear)) {
       if (!this.value) {
-        this.value = {}
+        this.value = <any>{}
       }
 
       this.value.year = this.padYear;
@@ -100,15 +78,28 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
 
   onGoPrevClick(evt: MouseEvent) {
     if (this.isYearSelectable(-1)) {
-      this.padDate = this.addYear(-1);
+      --this.padYear;
       this.validate();
     }
   }
 
   onGoNextClick(evt: MouseEvent) {
     if (this.isYearSelectable(1)) {
-      this.padDate = this.addYear(1);
+      ++this.padYear;
       this.validate();
+    }
+  }
+
+  isActiveMonth(month, year) {
+    if (this.value) {
+      return this.value.month === month && this.value.year === this.padYear;
+    }
+    return false;
+  }
+
+  private _monthClass(month, year) {
+    if (this.monthClass) {
+      return this.monthClass(month, year);
     }
   }
 
@@ -127,23 +118,20 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
     return false;
   }
 
-  isYearSelectable(dateChange) {
-    let date = this.addYear(dateChange);
+  isYearSelectable(monthChange: number) {
+    let newPadYear = this.padYear + monthChange;
     if (this.years && Object.prototype.toString.call(this.years) === '[object Array]') {
-      return this.years.indexOf(date.getFullYear()) > -1;
+      return this.years.indexOf(newPadYear) > -1;
     }
-    if (dateChange < 0 && this.min && date.getFullYear() < this.min.year) {
+    if (monthChange < 0 && this.min && newPadYear < this.min.year) {
       return false;
     }
-    if (dateChange > 0 && this.max && date.getFullYear() > this.max.year) {
+    if (monthChange > 0 && this.max && newPadYear > this.max.year) {
       return false;
     }
     return true;
   }
 
-  addYear(add: number) {
-    return new Date(new Date().setFullYear(this.padDate.getFullYear() + add));
-  }
 
   // ControlValueAccessor implementation
   private _onChange = (_: any) => { };
@@ -152,7 +140,7 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
   public writeValue(val: any) {
     this.value = val;
     if (this.value) {
-      this.padDate = new Date(this.value.year, this.value.month);
+      this.padYear = this.value.year || this.padYear;
       this.validate();
     }
   }

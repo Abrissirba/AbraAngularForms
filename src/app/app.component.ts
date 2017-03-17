@@ -18,7 +18,7 @@ export class AppComponent {
       dateRangePicker: [null, AbraValidators.DateRangePickerMinLengthValidator(3)],
       multiRow: [null],
       monthPicker: [null],
-      monthRangePicker: [null, AbraValidators.DateRangePickerMinLengthValidator(5)]
+      monthRangePicker: [null, AbraValidators.MonthRangePickerLockedRangeValidator(5)]
     });
   }
 

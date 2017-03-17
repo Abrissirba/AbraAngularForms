@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, forwardRef, ViewChild, 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 import { DateHelper } from '../../common/date-helpers';
+import { MonthPickerOptions, MonthPickerValue, MonthRangePickerValue } from '../models';
 @Component({
   selector: 'abra-month-range-picker',
   templateUrl: './month-range-picker.component.html',
@@ -16,21 +17,30 @@ import { DateHelper } from '../../common/date-helpers';
 })
 export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
 
-  @Input() startPickerOptions: any = {}
+  // if one or twop inputs should be used
+  @Input() singleInput: boolean = false;
 
-  @Input() endPickerOptions: any = {}
+  @Input() startPickerOptions: MonthPickerOptions;
 
-  @Input() months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  @Input() endPickerOptions: MonthPickerOptions;
 
-  @Input() maxRange;
+  @Input() months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  @Input() minRange;
+  // in months
+  @Input() maxRange: number;
 
-  @Input() placeholder;
+  // in months
+  @Input() minRange: number;
 
-  value: any = {};
-  isOpen = false;
-  leftPos = 0;
+  // in months
+  @Input() lockedRange: number;
+
+  // used if singleInput is true
+  @Input() placeholder: string;
+
+  private value: MonthRangePickerValue;
+  private isOpen = false;
+  private leftPos = 0;
 
   get inputValue() {
     if (this.value && this.value.start && this.value.end) {
@@ -46,26 +56,33 @@ export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
   }
 
   onStartPickerChange(value) {
-    //this.updateOtherDateWhenLocked("start");
-    this.updateStartDate();
+    this.updateStartDate(this.value);
     this.updateFormValue();
   }
 
   onEndPickerChange(value) {
-    //his.updateOtherDateWhenLocked("end");
-    this.updateEndDate();
+    this.updateEndDate(this.value);
     this.updateFormValue();
+  }
+
+  onFocus(evt) {
+    this.isOpen = true;
+    this.leftPos = this.elementRef.nativeElement.offsetLeft;
+  }
+
+  onOverlayClick(evt: MouseEvent) {
+    this.isOpen = false;
   }
 
   updateFormValue() {
     this._onChange(this.value);
   }
 
-  updateStartDate() {
-    this.endPickerOptions.min = Object.assign({}, this.value.start);
-    let diff = this.rangeDiff(this.value);
+  updateStartDate(updatedValue: MonthRangePickerValue) {
+    this.endPickerOptions.min = Object.assign({}, updatedValue.start);
+    let diff = this.rangeDiff(updatedValue);
     if (this.minRange) {
-      let newDate = DateHelper.toMoment(this.value.start.year, this.value.start.month, 0).add(this.minRange, 'months');
+      let newDate = DateHelper.toMoment(updatedValue.start.year, updatedValue.start.month, 0).add(this.minRange, 'months');
       let newDateIsAfterMax = this.endPickerOptions && this.endPickerOptions.max && newDate > DateHelper.toMoment(this.endPickerOptions.max.year, this.endPickerOptions.max.month, 0);
       if ((diff === null || diff < this.minRange) && !newDateIsAfterMax) {
         this.value.end = {
@@ -75,8 +92,18 @@ export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
       }
     }
     if (this.maxRange) {
-      let newDate = DateHelper.toMoment(this.value.start.year, this.value.start.month, 0).add(this.maxRange, 'months');
+      let newDate = DateHelper.toMoment(updatedValue.start.year, updatedValue.start.month, 0).add(this.maxRange, 'months');
       if (diff > this.maxRange) {
+        this.value.end = {
+          year: newDate.year(),
+          month: newDate.month()
+        }
+      }
+    }
+    if(this.lockedRange) {
+      let newDate = DateHelper.toMoment(updatedValue.start.year, updatedValue.start.month, 0).add(this.lockedRange - 1, 'months');
+      let newDateIsAfterMax = this.endPickerOptions && this.endPickerOptions.max && newDate > DateHelper.toMoment(this.endPickerOptions.max.year, this.endPickerOptions.max.month, 0);
+      if ((diff === null || diff !== this.minRange) && !newDateIsAfterMax) {
         this.value.end = {
           year: newDate.year(),
           month: newDate.month()
@@ -85,11 +112,11 @@ export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  updateEndDate() {
-    this.startPickerOptions.max = Object.assign({}, this.value.end);
-    let diff = this.rangeDiff(this.value);
+  updateEndDate(updatedValue: MonthRangePickerValue) {
+    this.startPickerOptions.max = Object.assign({}, updatedValue.end);
+    let diff = this.rangeDiff(updatedValue);
     if (this.minRange) {
-      let newDate = DateHelper.toMoment(this.value.end.year, this.value.end.month, 0).add(-this.minRange, 'months');
+      let newDate = DateHelper.toMoment(updatedValue.end.year, updatedValue.end.month, 0).add(-this.minRange, 'months');
       let newDateIsAfterMin = this.startPickerOptions && this.startPickerOptions.max && newDate > DateHelper.toMoment(this.startPickerOptions.max.year, this.startPickerOptions.max.month, 0);
       if ((diff === null || diff < this.minRange) && !newDateIsAfterMin) {
         this.value.start = {
@@ -99,8 +126,18 @@ export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
       }
     }
     if (this.maxRange) {
-      let newDate = DateHelper.toMoment(this.value.end.year, this.value.end.month, 0).add(-this.maxRange, 'months');
+      let newDate = DateHelper.toMoment(updatedValue.end.year, updatedValue.end.month, 0).add(-this.maxRange, 'months');
       if (diff > this.maxRange) {
+        this.value.start = {
+          year: newDate.year(),
+          month: newDate.month()
+        }
+      }
+    }
+    if (this.lockedRange) {
+      let newDate = DateHelper.toMoment(updatedValue.end.year, updatedValue.end.month, 0).add(-this.lockedRange + 1, 'months');
+      let newDateIsAfterMin = this.startPickerOptions && this.startPickerOptions.max && newDate > DateHelper.toMoment(this.startPickerOptions.max.year, this.startPickerOptions.max.month, 0);
+      if ((diff === null || diff !== this.lockedRange) && !newDateIsAfterMin) {
         this.value.start = {
           year: newDate.year(),
           month: newDate.month()
@@ -129,15 +166,6 @@ export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
     let isAfterStart = this.value.start ? year * 10 + month >= this.value.start.year * 10 + this.value.start.month : true;
     let isBeforeEnd = this.value.end ? year * 10 + month <= this.value.end.year * 10 + this.value.end.month : true;
     return isAfterStart && isBeforeEnd ? "in-range" : "";
-  }
-
-  onFocus(evt) {
-    this.isOpen = true;
-    this.leftPos = this.elementRef.nativeElement.offsetLeft;
-  }
-
-  onOverlayClick(evt: MouseEvent) {
-    this.isOpen = false;
   }
 
   rangeDiff(value) {
