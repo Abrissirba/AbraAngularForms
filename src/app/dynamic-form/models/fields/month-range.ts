@@ -1,6 +1,6 @@
 import { Validators, FormControl } from '@angular/forms';
 import { DynamicFormModel } from './dynamic-form';
-import { MonthRangePickerLockedRangeValidator, MonthRangePickerMaxRangeValidator, MonthRangePickerMinRangeValidator } from '../../../../not-in-npm/abra-angular-forms/validators';
+import { MonthRangePickerLockedRangeValidator, MonthRangePickerMaxRangeValidator, MonthRangePickerMinRangeValidator } from '../../../input/validators';
 import { DynamicFormValidators, DynamicFormValidatorKeys } from '../../utils/validators.utils';
 
 export class DynamicFormMonthRangeModel extends DynamicFormModel {

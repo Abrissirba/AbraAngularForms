@@ -9,7 +9,8 @@ import { MultiRowModule } from '../input/multi-row/multi-row.module';
 import { FormInputComponent } from './components/form-input/form-input.component';
 import { FormBaseComponent } from './components/form-base/form-base.component';
 import { DynamicFieldDirective } from './components/dynamic-field/dynamic-field.directive';
-import { DynamicFormComponent2 } from './components/dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
+import { DynamicValidationComponent } from './components/dynamic-validation/dynamic-validation.component';
 import { FormMultiRowComponent } from './components/form-multi-row/form-multi-row.component';
 import { FormSelectComponent } from './components/form-select/form-select.component';
 import { FormMonthRangeComponent } from './components/form-month-range/form-month-range.component';
@@ -28,7 +29,8 @@ import { DynamicFormService } from './services/dynamic-form.service';
   declarations: [
     FormBaseComponent,
     DynamicFieldDirective,
-    DynamicFormComponent2,
+    DynamicFormComponent,
+    DynamicValidationComponent,
     FormInputComponent,
     FormMultiRowComponent,
     FormSelectComponent,
@@ -46,7 +48,7 @@ import { DynamicFormService } from './services/dynamic-form.service';
     DynamicFormService
   ],
   exports: [
-    DynamicFormComponent2,
+    DynamicFormComponent,
     DynamicFieldDirective
   ]
 })

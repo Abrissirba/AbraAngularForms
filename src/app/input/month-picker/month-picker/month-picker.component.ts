@@ -71,6 +71,7 @@ export class MonthPickerComponent implements OnInit, ControlValueAccessor {
 
       this.value.year = this.padYear;
       this.value.month = month;
+      this.value.monthName = this.months[month];
       this.isOpen = false || this.keepOpen;
       this._onChange(this.value);
     }

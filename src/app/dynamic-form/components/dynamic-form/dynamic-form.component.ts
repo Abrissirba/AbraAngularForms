@@ -3,11 +3,11 @@ import { FormGroup } from '@angular/forms';
 import { DynamicFormModel } from '../../models';
 import { DynamicFormService } from '../../services';
 @Component({
-  selector: 'app-dynamic-form2',
+  selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss']
 })
-export class DynamicFormComponent2 implements OnInit {
+export class DynamicFormComponent implements OnInit {
   @Input() config: Array<DynamicFormModel> = [];
 
   formGroup: FormGroup;

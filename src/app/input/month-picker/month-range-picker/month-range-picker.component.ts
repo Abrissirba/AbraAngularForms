@@ -85,29 +85,20 @@ export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
       let newDate = DateHelper.toMoment(updatedValue.start.year, updatedValue.start.month, 0).add(this.minRange, 'months');
       let newDateIsAfterMax = this.endPickerOptions && this.endPickerOptions.max && newDate > DateHelper.toMoment(this.endPickerOptions.max.year, this.endPickerOptions.max.month, 0);
       if ((diff === null || diff < this.minRange) && !newDateIsAfterMax) {
-        this.value.end = {
-          year: newDate.year(),
-          month: newDate.month()
-        }
+        this.value.end = this.value.start = this.getValueForDate(newDate);
       }
     }
     if (this.maxRange) {
       let newDate = DateHelper.toMoment(updatedValue.start.year, updatedValue.start.month, 0).add(this.maxRange, 'months');
       if (diff > this.maxRange) {
-        this.value.end = {
-          year: newDate.year(),
-          month: newDate.month()
-        }
+        this.value.end = this.value.start = this.getValueForDate(newDate);
       }
     }
-    if(this.lockedRange) {
+    if (this.lockedRange) {
       let newDate = DateHelper.toMoment(updatedValue.start.year, updatedValue.start.month, 0).add(this.lockedRange - 1, 'months');
       let newDateIsAfterMax = this.endPickerOptions && this.endPickerOptions.max && newDate > DateHelper.toMoment(this.endPickerOptions.max.year, this.endPickerOptions.max.month, 0);
       if ((diff === null || diff !== this.minRange) && !newDateIsAfterMax) {
-        this.value.end = {
-          year: newDate.year(),
-          month: newDate.month()
-        }
+        this.value.end = this.value.start = this.getValueForDate(newDate);
       }
     }
   }
@@ -119,32 +110,31 @@ export class MonthRangePickerComponent implements OnInit, ControlValueAccessor {
       let newDate = DateHelper.toMoment(updatedValue.end.year, updatedValue.end.month, 0).add(-this.minRange, 'months');
       let newDateIsAfterMin = this.startPickerOptions && this.startPickerOptions.max && newDate > DateHelper.toMoment(this.startPickerOptions.max.year, this.startPickerOptions.max.month, 0);
       if ((diff === null || diff < this.minRange) && !newDateIsAfterMin) {
-        this.value.start = {
-          year: newDate.year(),
-          month: newDate.month()
-        }
+        this.value.start = this.value.start = this.getValueForDate(newDate);
       }
     }
     if (this.maxRange) {
       let newDate = DateHelper.toMoment(updatedValue.end.year, updatedValue.end.month, 0).add(-this.maxRange, 'months');
       if (diff > this.maxRange) {
-        this.value.start = {
-          year: newDate.year(),
-          month: newDate.month()
-        }
+        this.value.start = this.value.start = this.getValueForDate(newDate);
       }
     }
     if (this.lockedRange) {
       let newDate = DateHelper.toMoment(updatedValue.end.year, updatedValue.end.month, 0).add(-this.lockedRange + 1, 'months');
       let newDateIsAfterMin = this.startPickerOptions && this.startPickerOptions.max && newDate > DateHelper.toMoment(this.startPickerOptions.max.year, this.startPickerOptions.max.month, 0);
       if ((diff === null || diff !== this.lockedRange) && !newDateIsAfterMin) {
-        this.value.start = {
-          year: newDate.year(),
-          month: newDate.month()
-        }
+        this.value.start = this.getValueForDate(newDate);
       }
     }
   };
+
+  getValueForDate(date: moment.Moment): MonthPickerValue {
+    return {
+      year: date.year(),
+      month: date.month(),
+      monthName: this.months[date.month()]
+    }
+  }
 
   startMonthClass = (month, year) => {
     if (this.value && this.value.start) {

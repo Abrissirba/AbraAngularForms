@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { AbraInputModule } from './input';
+import { DemoModule } from './demo';
+import { AppRoutingModule } from './app.routing.module';
 
 import { AppComponent } from './app.component';
 
@@ -16,7 +17,8 @@ import { AppComponent } from './app.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AbraInputModule
+    AppRoutingModule,
+    DemoModule
   ],
   providers: [],
   bootstrap: [AppComponent]

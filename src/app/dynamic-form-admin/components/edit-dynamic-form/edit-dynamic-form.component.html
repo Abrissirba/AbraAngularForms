@@ -1,0 +1,68 @@
+<h5>Fields</h5>
+
+<div>
+  <select class="form-control add-field" [(ngModel)]="selectedFieldType">
+    <option *ngFor="let fieldType of fieldTypes" [ngValue]="fieldType">{{fieldType.Title}}</option>
+  </select>
+  <button class="btn btn-primary add-field" (click)="onAddFieldClicked($event)"><i class="icon-plus"></i>Add Field</button>
+</div>
+
+<div class="dynamic-components">
+  <div *ngFor="let field of dynamicFormConfig" class="card-2">
+
+    <h6 class="header">
+      <span class="title">{{field.label + ' - (' + field.title + ')'}}</span>
+      <i class="icon-close" (click)="onRemoveFormComponentClick(field, $event)"></i>
+    </h6>
+
+    <div class="body">
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" placeholder="Title" [(ngModel)]="field.label" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Sort order</label>
+        <input placeholder="0.00" [(ngModel)]="field.sortOrder" class="form-control">
+      </div>
+
+      <div *ngIf="field.settings?.options" class="form-group" class="multi-row">
+        <label>Options</label>
+        <abra-multi-row [(ngModel)]="field.settings.options"></abra-multi-row>
+      </div>
+
+      <div *ngIf="field.controlType === 'dropdown'" class="form-group">
+        <div class="form-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="field.settings.multi"> Multiple choice
+          </label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h6>Validations</h6>
+
+      <div class="form-group">
+        <select class="form-control add-validation" [(ngModel)]="field._newValidationType">
+        <option *ngFor="let validator of field.availableValidators" [ngValue]="validator">{{validator.title}}</option>
+      </select>
+        <button class="btn btn-primary add-field" (click)="onAddValidationClicked(field, $event)"><i class="icon-plus"></i>Add Validation</button>
+      </div>
+
+      <div *ngFor="let validation of field.validations">
+        <div class="form-group">
+          <label>{{validation.title}}</label>
+          <div class="row">
+            <div class="col-xs-10">
+              <input *ngIf="validation.inputType === 'input'" [attr.type]="validation.inputSubType" [(ngModel)]="validation.value" class="form-control validation-input">
+            </div>
+            <div class="col-xs-2">
+              <button class="btn btn-yellow remove-validation" (click)="onRemoveFieldClick(field, validation, $event)"><i class="icon-close"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

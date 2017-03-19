@@ -1,26 +1,16 @@
 import { DynamicFormModel } from './dynamic-form';
 import { DynamicFormValidators } from '../../utils/validators.utils';
 
-export class DynamicFormDropdownModel extends DynamicFormModel {
-  static Type = 'dropdown';
-  static Title = 'Dropdown';
+export class DynamicFormSelectModel extends DynamicFormModel {
+  static Type = 'select';
+  static Title = 'Select';
   static AvailableValidators = [
     DynamicFormValidators.Required
   ];
 
   constructor(options: {} = {}) {
     super(options);
-    this.settings.options = DynamicFormDropdownModel.tryConvertToObjectOptions(this.settings) || [''];
-    this.settings.ssSettings = this.getSSSettings();
-  }
-
-  private getSSSettings() {
-    if (!this.settings.multi) {
-      return {
-        selectionLimit: 1,
-        autoUnselect: true
-      }
-    }
+    this.settings.options = DynamicFormSelectModel.tryConvertToObjectOptions(this.settings) || [''];
   }
 
   public static tryConvertToObjectOptions(settings) {
