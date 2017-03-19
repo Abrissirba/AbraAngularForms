@@ -1,4 +1,4 @@
-<div class="dynamic-field form-input" [formGroup]="group">
+<div class="dynamic-field form-input" [formGroup]="formGroup">
   <label>{{ config.label }}</label>
   <abra-multi-row  [formControlName]="config.name" 
     [inputType]="getSettingsValue('inputType')"
@@ -9,4 +9,6 @@
     [buttonAddClass]="getSettingsValue('buttonAddClass')"
     [buttonRemoveClass]="getSettingsValue('buttonRemoveClass')">
   </abra-multi-row>
+
+  <abra-dynamic-validation [formCtrl]="formControl" [config]="config"></abra-dynamic-validation>
 </div>

@@ -9,7 +9,7 @@ export class DynamicFieldDirective implements OnInit {
   config;
 
   @Input()
-  group: FormGroup;
+  form: FormGroup;
 
   component;
   
@@ -23,6 +23,6 @@ export class DynamicFieldDirective implements OnInit {
     const factory = this.resolver.resolveComponentFactory<any>(component);
     this.component = this.container.createComponent(factory);
     this.component.instance.config = this.config;
-    this.component.instance.group = this.group;
+    this.component.instance.formGroup = this.form;
   }
 }

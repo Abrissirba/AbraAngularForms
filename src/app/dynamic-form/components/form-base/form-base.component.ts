@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
 export class FormBaseComponent<T extends DynamicFormModel> implements OnInit {
 
   @Input() config: T;
-  @Input() group: FormGroup;
+  @Input() formGroup: FormGroup;
 
   constructor() { }
 
@@ -19,6 +19,10 @@ export class FormBaseComponent<T extends DynamicFormModel> implements OnInit {
 
   getSettingsValue(key: string) {
     return this.config.settings ? this.config.settings[key] : null;
+  }
+
+  get formControl() {
+    return this.formGroup.controls[this.config.name];
   }
 
 }

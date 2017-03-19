@@ -1,9 +1,15 @@
-import { Validation } from './validation';
+import { Validation } from '../validation';
 import { IDynamicFormModel } from './dynamic-form.interface';
 import { Validators } from '@angular/forms';
 
 export class DynamicFormModel implements IDynamicFormModel {
+  static Type;
+  static Title;
+  static AvailableValidators;
+
   type: string;
+  title: string;
+  
   name: string;
   label: string;
   placeholder?: string;
@@ -21,11 +27,14 @@ export class DynamicFormModel implements IDynamicFormModel {
     name?: string,
     label?: string,
     sortOrder?: number,
-    type?: string,
     settings?: any,
     placeholder?: string,
     validations?: Array<Validation>
   } = {}) {
+    this.type = this.constructor['Type'];
+    this.title = this.constructor['Title'];
+    this.availableValidators = this.constructor['AvailableValidators'];
+
     this.id = options.id;
     this.value = options.value;
     this.name = options.name || '';
@@ -34,21 +43,11 @@ export class DynamicFormModel implements IDynamicFormModel {
     this.validations = options.validations || [];
     this.sortOrder = options.sortOrder === undefined ? 0 : options.sortOrder;
     this.settings = this.tryParseSettings(options.settings) || {};
-    this.type = options.type || '';
-  }
-
-  public getValidatorOfType(type: string) {
-    if (!this.validations) {
-      return null;
-    }
-    return this.validations.filter(validator => {
-      return validator.key.toLowerCase() === type.toLowerCase();
-    })[0];
   }
 
   public createValidators() {
     let validators = [];
-    if(this.validations) {
+    if(this.validations && this.availableValidators) {
       this.validations.forEach(validation => {
         let validator = this.availableValidators.filter(availableValidator => {
           return availableValidator.key === validation.key;
@@ -56,6 +55,7 @@ export class DynamicFormModel implements IDynamicFormModel {
         if(!validator) {
           throw new Error(`The validator with key ${validation.key} could not be found for dynamic form control of type ${this.type}`);
         }
+        validation.errorMessage = validation.errorMessage || validator.errorMessage;
         validators.push(validator.factory(validation.value));
       });
     }

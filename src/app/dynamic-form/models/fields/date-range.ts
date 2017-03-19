@@ -2,8 +2,7 @@ import { DynamicFormModel } from './dynamic-form';
 
 export class DynamicFormDateRangeModel extends DynamicFormModel {
   static type = 'daterange';
-  controlTypeTitle = 'Date range';
-
+  static title = 'Date range';
   static AvailableValidators = Object.assign({}, DynamicFormDateRangeModel.AvailableValidators, {
     MAXRANGE: {
       key: "MAXRANGE",

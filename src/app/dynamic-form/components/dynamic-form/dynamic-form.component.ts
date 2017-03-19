@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { DynamicFormModel, DynamicFormInputModel, DynamicFormTextAreaModel } from '../../models';
+import { FormGroup } from '@angular/forms';
+import { DynamicFormModel } from '../../models';
+import { DynamicFormService } from '../../services';
 @Component({
   selector: 'app-dynamic-form2',
   templateUrl: './dynamic-form.component.html',
@@ -9,20 +10,11 @@ import { DynamicFormModel, DynamicFormInputModel, DynamicFormTextAreaModel } fro
 export class DynamicFormComponent2 implements OnInit {
   @Input() config: Array<DynamicFormModel> = [];
 
-  form: FormGroup;
+  formGroup: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private dynamicFormService: DynamicFormService) {}
 
   ngOnInit() {
-    this.form = this.createGroup();
-  }
-
-  createGroup() {
-    const group = this.fb.group({});
-    this.config.forEach(control => {
-      let validators = control.createValidators();
-      group.addControl(control.name, this.fb.control(control.value, validators));
-    });
-    return group;
+    this.formGroup = this.dynamicFormService.toFormGroup(this.config);
   }
 }

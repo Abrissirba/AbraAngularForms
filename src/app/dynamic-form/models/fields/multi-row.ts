@@ -1,16 +1,14 @@
 import { DynamicFormModel } from './dynamic-form';
-import { DynamicFormValidators } from '../utils/validators.utils';
+import { DynamicFormValidators } from '../../utils/validators.utils';
 
-export class DynamicFormInputModel extends DynamicFormModel {
-  static type = 'input';
-  controlTypeTitle = 'input';
-
+export class DynamicFormMultiRowModel extends DynamicFormModel {
+  static Type = 'multirow';
+  static Title = 'Multirow';
   static AvailableValidators = [
     DynamicFormValidators.Required, 
     DynamicFormValidators.MaxLength, 
     DynamicFormValidators.MinLength
   ];
-  availableValidators = DynamicFormInputModel.AvailableValidators;
 
   constructor(options: {} = {}) {
     super(options);

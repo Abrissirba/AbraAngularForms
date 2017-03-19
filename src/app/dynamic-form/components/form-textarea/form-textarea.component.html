@@ -1,4 +1,6 @@
-<div class="dynamic-field form-input" [formGroup]="group">
+<div class="dynamic-field form-input form-group" [formGroup]="formGroup">
   <label>{{ config.label }}</label>
-  <textarea type="text" [attr.placeholder]="config.placeholder" [formControlName]="config.name" [rows]="config.settings?.rows" ></textarea>
+  <textarea type="text" class="form-control" [attr.placeholder]="config.placeholder" [formControlName]="config.name" [rows]="config.settings?.rows"></textarea>
+
+  <abra-dynamic-validation [formCtrl]="formControl" [config]="config"></abra-dynamic-validation>
 </div>

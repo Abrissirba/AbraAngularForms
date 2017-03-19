@@ -1,0 +1,7 @@
+  <div *ngIf="formCtrl.errors && (formCtrl.dirty || formCtrl.touched)" class="alert alert-danger">
+    <div *ngFor="let validation of config.validations">
+      <div *ngIf="formCtrl.errors && formCtrl.errors[validation.key]">
+        {{validation.errorMessage(config, formCtrl)}}
+      </div>
+    </div>
+  </div>

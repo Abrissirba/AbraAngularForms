@@ -1,8 +1,8 @@
-<form class="dynamic-form" [formGroup]="form">
-  <ng-container *ngFor="let field of config;" dynamicField [config]="field" [group]="form"></ng-container>
+<form class="dynamic-form" [formGroup]="formGroup">
+  <ng-container *ngFor="let field of config;" dynamicField [config]="field" [form]="formGroup"></ng-container>
 </form>
 
 <pre>
-  {{form.value | json}}
-  {{form.valid}}
+  {{formGroup.value | json}}
+  {{formGroup.valid}}
 </pre>
