@@ -10,18 +10,21 @@
 
     <abra-month-range-picker name="monthRangePicker" [(ngModel)]="value.monthRangePicker" (ngModelChange)="onChange($event)" [maxRange]="range"></abra-month-range-picker>-->
 
-  <abra-date-picker name="datePicker" formControlName="datePicker" placeholder="2017-02-19" inputClass="test"></abra-date-picker>
+  <!-- <abra-date-picker name="datePicker" formControlName="datePicker" placeholder="2017-02-19" inputClass="test"></abra-date-picker> -->
 
-  <abra-date-range-picker name="dateRangePicker" formControlName="dateRangePicker" min-range="3" inputGroupClass="form-control"
+  <abra-date-range-picker name="dateRangePicker" formControlName="dateRangePicker" min-range="3" [minRange]="range" inputGroupClass="form-control"
     inputClass="test" placeholderStart="Start" placeholderEnd="End"></abra-date-range-picker>
 
-  <abra-multi-row name="multiRow" formControlName="multiRow" [inputType]="'number'"></abra-multi-row>
+  <!-- <abra-multi-row name="multiRow" formControlName="multiRow" [inputType]="'number'"></abra-multi-row>
 
   <abra-month-picker name="monthPicker" formControlName="monthPicker"></abra-month-picker>
 
   <abra-month-range-picker name="monthRangePicker" formControlName="monthRangePicker" [lockedRange]="range" [startPickerOptions]="{max: {year: 2017, month: 2}}"
-    [endPickerOptions]="{max: {year: 2017, month: 2}}" [singleInput]="false"></abra-month-range-picker>
+    [endPickerOptions]="{max: {year: 2017, month: 2}}" [singleInput]="false"></abra-month-range-picker> -->
 </form>
 <div>
-  <pre>{{form.value | json}}</pre>
+  <!-- <pre>{{form.value | json}}</pre> -->
+  <pre>{{this.form.get('dateRangePicker').value | json}}</pre>
+  <pre>{{this.form.get('dateRangePicker').errors | json}}</pre>
+  <pre>{{this.form.get('dateRangePicker').valid | json}}</pre>
 </div>

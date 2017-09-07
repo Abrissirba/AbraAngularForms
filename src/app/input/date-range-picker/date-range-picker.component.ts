@@ -16,7 +16,7 @@ import * as moment from 'moment';
   ]
 })
 export class DateRangePickerComponent implements OnInit, ControlValueAccessor {
-  @Input() value: {start: string, end: string} = { start: null, end: null };
+  @Input() value: { start: string, end: string } = { start: null, end: null };
   @Input() inputGroupClass: string;
   @Input() inputClass: string;
   @Input() placeholderStart: string = 'Start date';
@@ -25,19 +25,28 @@ export class DateRangePickerComponent implements OnInit, ControlValueAccessor {
   @ViewChild('startPicker') startPicker: DatePickerComponent;
   @ViewChild('endPicker') endPicker: DatePickerComponent;
 
+  // in months
+  @Input() maxRange: number;
+
+  // in months
+  @Input() minRange: number;
+
+  // in months
+  @Input() lockedRange: number;
+
   constructor() { }
 
   ngOnInit() {
   }
 
   onStartPickerChange(value) {
-    //this.updateOtherDateWhenLocked("start");
+    this.updateOtherDateWhenLocked('start');
     this.updateStartDate();
     this.updateFormValue();
   }
 
   onEndPickerChange(value) {
-    //his.updateOtherDateWhenLocked("end");
+    this.updateOtherDateWhenLocked('end');
     this.updateEndDate();
     this.updateFormValue();
   }
@@ -58,14 +67,24 @@ export class DateRangePickerComponent implements OnInit, ControlValueAccessor {
     this.endPicker.setEndRange(this.endPicker.getDate());
   };
 
-  // private updateOtherDateWhenLocked(changedDate: string) {
-  //   if (this.config.getValidatorOfType("LOCKEDDIFF")) {
-  //     var diff = parseInt(this.config.getValidatorOfType("LOCKEDDIFF").value);
-  //     if (changedDate === "start") {
-  //       this.value.end = moment(this.value.start).add(diff, 'month').format("YYYY-MM-DD");
+  private updateOtherDateWhenLocked(changedDate: string) {
+    if (this.lockedRange !== undefined && this.lockedRange !== null) {
+      if (changedDate === 'start') {
+        this.value.end = moment(this.value.start).add(this.lockedRange, 'month').format('YYYY-MM-DD');
+      }
+      else {
+        this.value.start = moment(this.value.end).add(-this.lockedRange, 'month').format('YYYY-MM-DD');
+      }
+    }
+  }
+
+  // private updateOtherDateWhenMinRange(changedDate: string) {
+  //   if (this.minRange !== undefined && this.minRange !== null) {
+  //     if (changedDate === 'start' && this.value) {
+  //       this.value.end = moment(this.value.start).add(this.minRange, 'month').format('YYYY-MM-DD');
   //     }
   //     else {
-  //       this.value.start = moment(this.value.end).add(-diff, 'month').format("YYYY-MM-DD");
+  //       this.value.start = moment(this.value.end).add(-this.lockedRange, 'month').format('YYYY-MM-DD');
   //     }
   //   }
   // }

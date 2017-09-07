@@ -13,14 +13,18 @@ export class FieldsComponent implements OnInit {
   value = {};
   form: FormGroup;
 
+  range = 3;
+
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       datePicker: [null, Validators.required],
-      dateRangePicker: [null, AbraValidators.DateRangePickerMinLengthValidator(3)],
+      dateRangePicker: [null, AbraValidators.DateRangePickerMinRangeValidator(3)],
       multiRow: [null],
       monthPicker: [null],
       monthRangePicker: [null, AbraValidators.MonthRangePickerLockedRangeValidator(5)]
     });
+
+    this.form.valueChanges.subscribe(this.onChange.bind(this));
   }
 
   ngOnInit() {
@@ -28,9 +32,7 @@ export class FieldsComponent implements OnInit {
   }
 
   onChange(evt) {
-    console.log(this.form.value);
+    console.log(this.form.get('dateRangePicker').errors);
   }
-
-  range = 5;
 
 }

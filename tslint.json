@@ -21,7 +21,7 @@
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
-      true,
+      false,
       140
     ],
     "member-access": false,
@@ -59,8 +59,6 @@
     "one-line": [
       true,
       "check-open-brace",
-      "check-catch",
-      "check-else",
       "check-whitespace"
     ],
     "prefer-const": true,

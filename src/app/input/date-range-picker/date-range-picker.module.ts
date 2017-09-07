@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePickerModule } from '../date-picker/date-picker.module';
 import { DateRangePickerComponent } from './date-range-picker.component';
-import { DateRangePickerMaxLengthDirective } from './validators/date-range-picker-max-length.directive';
-import { DateRangePickerMinLengthDirective } from './validators/date-range-picker-min-length.directive';
+import { DateRangePickerMaxRangeDirective } from './validators/date-range-picker-max-range.directive';
+import { DateRangePickerMinRangeDirective } from './validators/date-range-picker-min-range.directive';
+import { DateRangePickerLockedRangeDirective } from './validators/date-range-picker-locked-range.directive';
 
 @NgModule({
   imports: [
@@ -13,15 +14,16 @@ import { DateRangePickerMinLengthDirective } from './validators/date-range-picke
     ReactiveFormsModule,
     DatePickerModule
   ],
-  declarations: [ 
-    DateRangePickerComponent, 
-    DateRangePickerMaxLengthDirective, 
-    DateRangePickerMinLengthDirective 
-  ],
-  exports: [ 
+  declarations: [
     DateRangePickerComponent,
-    DateRangePickerMaxLengthDirective, 
-    DateRangePickerMinLengthDirective 
+    DateRangePickerMaxRangeDirective,
+    DateRangePickerMinRangeDirective, 
+    DateRangePickerLockedRangeDirective
+  ],
+  exports: [
+    DateRangePickerComponent,
+    DateRangePickerMaxRangeDirective,
+    DateRangePickerMinRangeDirective
   ]
 })
 export class DateRangePickerModule { }

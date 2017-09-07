@@ -13,10 +13,10 @@ A date range picker that use the abra-input-date component.
 
 #### Validators
 
-##### abra-date-range-picker-min-length
+##### abra-date-range-picker-min-range
 Validates min length of the selected range for the abra-date-range-picker. Currently only supports months.
 
-##### abra-date-range-picker-max-length
+##### abra-date-range-picker-max-range
 Validates max length of the selected range for the abra-date-range-picker. Currently only supports months.
 
 ### abra-multi-row
